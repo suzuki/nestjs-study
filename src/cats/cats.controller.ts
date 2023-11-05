@@ -1,24 +1,26 @@
-import { Body, Controller, ForbiddenException, Get, HttpException, HttpStatus, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
-//import { Cat } from './interfaces/cat.interface';
 import { CatsService } from './cats.service';
 
 @Controller('cats')
 export class CatsController {
+  private readonly logger = new Logger(CatsController.name);
+
   constructor(
     private catsService: CatsService,
   ) {}
 
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
-    throw new ForbiddenException();
     this.catsService.create(createCatDto);
   }
 
   @Get()
   async findAll() {
     try {
-      return this.catsService.findAll();
+      return {
+        data: this.catsService.findAll(),
+      };
     } catch (error) {
       throw new HttpException({
         status: HttpStatus.FORBIDDEN,
@@ -29,10 +31,12 @@ export class CatsController {
     }
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string): string {
-  //   return `This action returns a #${id} cat`;
-  // }
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    this.logger.log(`findOne: ${id}`);
+
+    return this.catsService.findOne(id);
+  }
 
   // @Put(':id')
   // update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
