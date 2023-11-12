@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
 import { LocalStrategy } from './auth/local.strategy';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { LocalStrategy } from './auth/local.strategy';
     AuthModule,
     UsersModule,
     PassportModule,
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017'),
   ],
   providers: [
     AuthService,
