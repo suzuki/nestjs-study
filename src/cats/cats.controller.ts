@@ -12,7 +12,11 @@ export class CatsController {
 
   @Post()
   async create(@Body() createCatDto: CreateCatDto) {
-    this.catsService.create(createCatDto);
+    console.log(createCatDto);
+
+    const cat = await this.catsService.create(createCatDto);
+
+    return cat;
   }
 
   @Get()
