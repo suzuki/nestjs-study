@@ -20,6 +20,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     };
 
     this.logger.error(message);
+    this.logger.error(exception);
 
     response
       .status(status)
